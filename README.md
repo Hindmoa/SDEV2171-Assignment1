@@ -46,7 +46,7 @@ Submit the URL of your GitHub repository through Brightspace.
 
 ### Example
 
-`https://github.com/yourusername/SDEV2171-Assignment1-YourName`
+`https://github.com/yourusername/SDEV2171-Assignment1-Hinda`
 
 ## Git Requirement
 
