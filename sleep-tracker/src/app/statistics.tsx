@@ -1,25 +1,22 @@
 import { Link } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
-import StatCard from '../components/stat-card';
 
 const statistics = [
-  {
-    title: '7-Day Sleep Duration',
-    value: '7h 24m',
-  },
-  {
-    title: '7-Day Average Quality',
-    value: 'Good',
-  },
-  {
-    title: 'Average Time to Bed',
-    value: '10:45 PM',
-  },
-  {
-    title: 'Average Wake Time',
-    value: '6:30 AM',
-  },
+  { title: '7-Day Sleep Duration', value: '7h 24m' },
+  { title: '7-Day Average Quality', value: 'Good' },
+  { title: 'Average Time to Bed', value: '10:45 PM' },
+  { title: 'Average Wake Time', value: '6:30 AM' },
 ];
+
+// Reusable function component
+function StatCard({ title, value }: { title: string; value: string }) {
+  return (
+    <View style={styles.statCard}>
+      <Text style={styles.statTitle}>{title}</Text>
+      <Text style={styles.statValue}>{value}</Text>
+    </View>
+  );
+}
 
 export default function StatisticsScreen() {
   return (
@@ -32,12 +29,11 @@ export default function StatisticsScreen() {
 
       <View style={styles.grid}>
         {statistics.map((stat) => (
-             <StatCard
-                 key={stat.title}
-                 title={stat.title}
-                value={stat.value}
-              />
-     
+          <StatCard
+            key={stat.title}
+            title={stat.title}
+            value={stat.value}
+          />
         ))}
       </View>
 
