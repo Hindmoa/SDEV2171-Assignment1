@@ -1,5 +1,6 @@
 import { Link } from 'expo-router';
 import { StyleSheet, Text, View } from 'react-native';
+import StatCard from '../components/stat-card';
 
 const statistics = [
   {
@@ -31,10 +32,12 @@ export default function StatisticsScreen() {
 
       <View style={styles.grid}>
         {statistics.map((stat) => (
-          <View style={styles.statCard} key={stat.title}>
-            <Text style={styles.statTitle}>{stat.title}</Text>
-            <Text style={styles.statValue}>{stat.value}</Text>
-          </View>
+             <StatCard
+                 key={stat.title}
+                 title={stat.title}
+                value={stat.value}
+              />
+     
         ))}
       </View>
 
