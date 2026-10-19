@@ -1,7 +1,60 @@
 import { Link } from 'expo-router';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useState } from 'react';
 
 export default function SleepLogScreen() {
+  const [date, setDate] = useState('');
+  const [bedTime, setBedTime] = useState('');
+  const [wakeTime, setWakeTime] = useState('');
+  const [quality, setQuality] = useState('');
+  const [message, setMessage] = useState('');
+
+  // Validate and submit the sleep entry
+  function handleSubmit() {
+    console.log('Date:', date);
+    console.log('Bedtime:', bedTime);
+    console.log('Wake time:', wakeTime);
+    console.log('Quality:', quality);
+    if (!date.trim() || !bedTime.trim() || !wakeTime.trim() || !quality) {
+      setMessage('Please fill in all fields.');
+      return;
+    }
+
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    const timePattern = /^([01]\d|2[0-3]):[0-5]\d$/;
+    const parsedDate = new Date(`${date}T00:00:00`);
+
+    // Validate the date
+    if (
+      !datePattern.test(date) ||
+      Number.isNaN(new Date(`${date}T00:00:00`).getTime()) ||
+      parsedDate.getFullYear() !== Number(date.slice(0, 4)) ||
+      parsedDate.getMonth() + 1 !== Number(date.slice(5, 7)) ||
+      parsedDate.getDate() !== Number(date.slice(8, 10))
+    ) {
+      setMessage('Please enter a valid date (YYYY-MM-DD).');
+      setIsError(true);
+      return;
+    }
+
+    // Validate bedtime and wake time
+    if (!timePattern.test(bedTime) || !timePattern.test(wakeTime)) {
+      setMessage('Please enter times in HH:MM format, such as 22:30.');
+      setIsError(true);
+      return;
+    }
+
+    // Successful submission
+    setMessage('Sleep entry submitted successfully!');
+    setIsError(false);
+
+    // Reset the form
+    setDate('');
+    setBedTime('');
+    setWakeTime('');
+    setQuality('');
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Sleep Log Entry</Text>
@@ -11,46 +64,92 @@ export default function SleepLogScreen() {
       </Text>
 
       <View style={styles.form}>
+        {/* Date */}
         <Text style={styles.label}>Date</Text>
         <TextInput
           style={styles.input}
-          value="October 1, 2026"
-          editable={false}
+          placeholder="YYYY-MM-DD"
+          value={date}
+          onChangeText={(text) => {
+            setDate(text);
+            setMessage('');
+          }}  
         />
 
+        {/* Time to Bed */}
         <Text style={styles.label}>Time to Bed</Text>
         <TextInput
           style={styles.input}
-          placeholder="Example: 10:30 PM"
+          placeholder="HH:MM (e.g. 22:30)"
+          value={bedTime}
+          onChangeText={(text) => {
+            setBedTime(text);
+            setMessage('');
+          }}
         />
 
+        {/* Time Awake */}
         <Text style={styles.label}>Time Awake</Text>
         <TextInput
           style={styles.input}
-          placeholder="Example: 6:30 AM"
+          placeholder="HH:MM (e.g. 06:30)"
+          value={wakeTime}
+          onChangeText={(text) => {
+            setWakeTime(text);
+            setMessage('');
+          }}
         />
 
+        {/* Quality of Sleep */}
         <Text style={styles.label}>Quality of Sleep</Text>
 
         <View style={styles.qualityContainer}>
-          <View style={styles.qualityOption}>
-            <Text style={styles.qualityText}>Poor</Text>
-          </View>
-
-          <View style={styles.qualityOption}>
-            <Text style={styles.qualityText}>Fair</Text>
-          </View>
-
-          <View style={styles.qualityOption}>
-            <Text style={styles.qualityText}>Good</Text>
-          </View>
-
-          <View style={styles.qualityOption}>
-            <Text style={styles.qualityText}>Excellent</Text>
-          </View>
+          {['Poor', 'Fair', 'Good', 'Excellent'].map((option) => (
+            <Pressable
+              key={option}
+              onPress={() => {
+                setQuality(option);
+                setMessage('');
+              }}
+              style={[
+                styles.qualityOption,
+                quality === option && styles.selectedQuality,
+              ]}
+            >
+              <Text
+                style={[
+                  styles.qualityText,
+                  quality === option && styles.selectedQualityText,
+                ]}
+              >
+                {option}
+              </Text>
+            </Pressable>
+          ))}
         </View>
+
+        {/* Submit Button */}
+        <Pressable style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Submit Sleep Log</Text>
+        </Pressable>
+
+        {/* Validation and success message */}
+        {message !== '' && (
+          <Text style={styles.message}>{message}</Text>
+        )}
+      
+
+        {/* Error or Success Message */}
+      <Text style={[
+      styles.message,
+      isError ? styles.errorMessage : styles.successMessage,
+    ]}
+  >
+    {message}
+  </Text>
       </View>
 
+      {/* Back to Home */}
       <Link href="/" style={styles.backButton}>
         <Text style={styles.backButtonText}>Back to Home</Text>
       </Link>
@@ -108,6 +207,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#35469C',
+  },
+  selectedQuality: {
+    backgroundColor: '#4F6DDE',
+  },
+  selectedQualityText: {
+    color: '#FFFFFF',
+  },
+  submitButton: {
+    marginTop: 24,
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: '#4F6DDE',
+    alignItems: 'center',
+  },
+  submitButtonText: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  message: {
+    marginTop: 16,
+    fontSize: 15,
+    textAlign: 'center',
+    color: '#243B53',
   },
   backButton: {
     marginTop: 24,

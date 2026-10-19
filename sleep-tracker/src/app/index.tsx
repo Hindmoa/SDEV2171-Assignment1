@@ -26,6 +26,9 @@ export default function HomeScreen() {
         <Link href="/statistics" style={styles.button}>
           <Text style={styles.buttonText}>Sleep Statistics</Text>
         </Link>
+        <Link href="/sleep-list" style={styles.button}>
+          <Text style={styles.buttonText}>Sleep Log List</Text>
+        </Link>
       </View>
     </View>
   );
