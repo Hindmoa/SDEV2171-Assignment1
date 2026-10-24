@@ -16,4 +16,4 @@ Describe one challenge you encountered while implementing state management, data
 
 Choose one commit from your Git history that represents meaningful progress in this assignment. Include the commit message and explain what was implemented in that commit.
 
-5. One meaningful commit from my Git history was `d2052a9`, with the message **"feat: add sleep log form validation and reset"**. In this commit, I updated the `sleep-log.tsx` file to validate required fields and check the date and time formats before accepting a submission. I also added feedback messages and made the form automatically clear after a successful submission.
+5. One meaningful commit from my Git history was d2052a9, with the message **"feat: add sleep log form validation and reset"**. In this commit, I updated the sleep-log.tsx file to validate required fields and check the date and time formats before accepting a submission. I also added feedback messages and made the form automatically clear after a successful submission.
